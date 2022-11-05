@@ -14,10 +14,10 @@
       @click="flipCard(card)"
       >
       <div class="view front-view">
-        <img src="../assets/que_icon.png" alt="icon">
+        <img src="/assets/que_icon.png" alt="icon">
       </div>
       <div class="view back-view">
-        <img :src="`src/assets/${card.img}.png`" alt="card-img">
+        <img :src="`/assets/${card.img}.png`" alt="card-img">
       </div>
     </li>    
   </ul>
