@@ -1,0 +1,29 @@
+/* Import Google font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 95vh;
+  padding: 0 0.5rem;
+  align-items: center;
+  justify-content: center;
+  background: #9b59b6;
+}
+
+footer {
+  font-size: 12px;
+  background: #9b59b6;
+  text-align: center;
+  min-height: 5vh;
+  color: #ffffff;
+}
+
+footer a {
+  color: #2d1238;
+}
