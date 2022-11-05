@@ -1,5 +1,5 @@
 <template>
-<div class="scores">
+<div class="scores second-wrapper">
   <div>Best score: {{highscore}}</div>
   <div>Number of tries: {{tries}}</div>
 </div>
@@ -23,14 +23,25 @@
   </ul>
 </div>
 
-<div class="options">
+<div class="options second-wrapper">
   <button type="button" @click="resetBestScore">Reset best score</button>
+  <div class="themes">
+    <p>Pick theme:</p>
+    <p>
+      <input type="radio" name="theme" id="drinks" value="drinks" v-model='theme'/>
+      <label for="drinks">Drinks</label>
+    </p>
+    <p>
+      <input type="radio" name="theme" id="animals" value="animals" v-model='theme'/>
+      <label for="animals">Animals</label>
+    </p>
+  </div>
 </div>
 </template>
 
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 const tries = ref(0);
 const highscore = ref(0);
@@ -39,7 +50,10 @@ highscore.value = localStorage.getItem('remember-me-vue-highscore') ?? 0;
 const matched = ref(0);
 const disableDeck = ref(false);
 
-const allCards = ['img-1', 'img-2', 'img-3', 'img-4', 'img-5', 'img-6', 'img-7', 'img-8'];
+const allCards = {
+  drinks: ['img-1', 'img-2', 'img-3', 'img-4', 'img-5', 'img-6', 'img-7', 'img-8'], 
+  animals: ['camel', 'cat', 'chicken', 'chimpanzee', 'dog', 'duck', 'fox', 'red-panda']
+};
 const cards = ref([]);
 let cardOne= ref("");
 let cardTwo = ref("");
@@ -57,9 +71,10 @@ function shuffleCards() {
 
   cards.value = arr.reduce((acc, element) => {
     const newCard = { 
-      img: allCards[element - 1], 
+      img: allCards[theme.value][element - 1], 
       flipped: false,
       shake: false,
+      index: element - 1
     };
     acc.push(newCard)
     return acc;
@@ -133,6 +148,16 @@ function resetBestScore() {
   localStorage.setItem('remember-me-vue-highscore', 0);
   highscore.value = 0;
 }
+
+const theme = ref();
+theme.value = localStorage.getItem('remember-me-vue-theme') ?? 'drinks';
+
+watch(theme, (newTheme) => {
+  cards.value.forEach(c => {
+    c.img = allCards[theme.value][c.index];
+  })
+  localStorage.setItem('remember-me-vue-theme', newTheme);
+})
 </script>
 
 <style scoped>
@@ -142,7 +167,9 @@ function resetBestScore() {
   background: #F8F8F8;
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
-
+.second-wrapper {  
+  width: 450px;
+}
 .scores {
   font-size: 18px;
   font-weight: bold;
@@ -150,7 +177,6 @@ function resetBestScore() {
   margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
-  width: 450px;
 }
 
 .cards, 
@@ -223,7 +249,7 @@ function resetBestScore() {
   transform: rotateY(180deg);
 }
 @media screen and (max-width: 700px) {
-  .scores {
+  .second-wrapper {
     width: 400px;
   } 
   .cards {
@@ -238,7 +264,7 @@ function resetBestScore() {
   }
 }
 @media screen and (max-width: 530px) {
-  .scores {
+  .second-wrapper {
     width: 350px;
   } 
   .cards {
@@ -254,6 +280,8 @@ function resetBestScore() {
 }
 
 .options {
+  display: flex;
+  flex-direction: column;
   margin-top: 20px;
 }
 
@@ -266,10 +294,25 @@ button {
   background-color: #2d1238;
   border-color: #2d1238;
   text-transform: uppercase;
+  width: fit-content;
+  margin-inline: auto;
 }
 
 button:hover {
   background-color: #481e58;
   border-color: #481e58;
+}
+
+.themes {
+  margin-top: 20px;
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  color: #ffffff;
+}
+
+[type='radio'] {
+  accent-color: #481e58;
+  margin-right: 3px;
 }
 </style>
