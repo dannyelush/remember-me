@@ -1,7 +1,7 @@
 <template>
 <div class="scores second-wrapper">
   <div>Best score: {{highscore}}</div>
-  <div>Number of tries: {{tries}}</div>
+  <div>Score: {{score}}</div>
 </div>
 
 <div class="wrapper">      
@@ -43,7 +43,7 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue'
 
-const tries = ref(0);
+const score = ref(0);
 const highscore = ref(0);
 highscore.value = localStorage.getItem('remember-me-vue-highscore') ?? 0;
 
@@ -62,6 +62,7 @@ function shuffleCards() {
   cards.value = [];
   // Reset matched
   matched.value = 0;
+  score.value = 0;
   disableDeck.value = false;
   cardOne.value = "";
   cardTwo.value = "";
@@ -105,11 +106,10 @@ function matchCards() {
   let img2 = cardTwo.value.img;
   if(img1 === img2) {
     matched.value++;
-    if(matched.value == 8) {
-      if (!highscore.value || tries.value < highscore.value) {
-        localStorage.setItem('remember-me-vue-highscore', tries.value);
-        highscore.value = tries.value;
-        tries.value = 0;
+    if(matched.value === 8) {
+      if (!highscore.value || score.value < highscore.value) {
+        localStorage.setItem('remember-me-vue-highscore', score.value);
+        highscore.value = score.value;        
       }
       restartGame();
     }
@@ -129,7 +129,7 @@ function flipCard(cardElem) {
     }
     cardTwo.value = cardElem;
     disableDeck.value = true;
-    tries.value++;
+    score.value++;
     matchCards();
   }
 }
