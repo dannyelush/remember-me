@@ -7,15 +7,15 @@ export default defineConfig({
   plugins: [
     vue(),
     VitePWA({
-      mode: "development",
+      mode: "production",
       base: "/",
       srcDir: "src",
       filename: "sw.ts",
       includeAssets: ["/favicon.png"],
       strategies: "injectManifest",
       manifest: {
-        name: "Test Project",
-        short_name: "Test",
+        name: "Remember me",
+        short_name: "Remember me",
         theme_color: "#9b59b6",
         start_url: "/",
         display: "standalone",
